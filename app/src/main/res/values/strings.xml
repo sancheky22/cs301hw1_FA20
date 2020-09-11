@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">cs301hw1_FA20</string>
+
+    <string-array name="hairStyles">
+        <item>Style1</item>
+        <item>Style2</item>
+        <item>Style3</item>
+    </string-array>
+<!--Array above is for hair styles to be used for spinner-->
+
+</resources>
