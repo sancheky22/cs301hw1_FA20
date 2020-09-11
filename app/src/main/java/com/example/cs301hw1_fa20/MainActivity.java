@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
-
         radioGroup = findViewById(R.id.radioGroup);
 
 
@@ -66,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void checkedButton(View v){
         int radioId = radioGroup.getCheckedRadioButtonId();
+        // sets radio  button to the ID of the radio button in the SV
         radioButton = findViewById(radioId);
         // This toast  dipslays text when radio buttons are selected.
         Toast.makeText(this,"Selected Radio Button: " + radioButton.getText(),Toast.LENGTH_SHORT).show();
