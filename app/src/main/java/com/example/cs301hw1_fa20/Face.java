@@ -29,14 +29,16 @@ public class Face {
 
     public void randomize(){
         // creates random rgb values (0-255) for skin,eye,hair
+        
+        // skin R,G,B
         int skinR = ThreadLocalRandom.current().nextInt(0,255);
         int skinG = ThreadLocalRandom.current().nextInt(0,255);
         int skinB = ThreadLocalRandom.current().nextInt(0,255);
-
+        // eye R,G,B
         int eyeR = ThreadLocalRandom.current().nextInt(0,255);
         int eyeG = ThreadLocalRandom.current().nextInt(0,255);
         int eyeB = ThreadLocalRandom.current().nextInt(0,255);
-
+        // hair R,G,B
         int hairR = ThreadLocalRandom.current().nextInt(0,255);
         int hairG = ThreadLocalRandom.current().nextInt(0,255);
         int hairB = ThreadLocalRandom.current().nextInt(0,255);
