@@ -7,8 +7,8 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-    <SurfaceView
-        android:id="@+id/surfaceView"
+    <com.example.cs301hw1_fa20.Face
+        android:id="@+id/Face"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF" />

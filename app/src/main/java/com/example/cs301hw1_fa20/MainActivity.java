@@ -11,11 +11,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
+        View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
     /**
      External Citation
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      Solution: I read the documentation to learn how to use toasts
      */
 
+    // Listener for radio buttons
     public void checkedButton(View v){
         int radioId = radioGroup.getCheckedRadioButtonId();
         // sets radio  button to the ID of the radio button in the SV
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Toast.makeText(this,"Selected Radio Button: " + radioButton.getText(),Toast.LENGTH_SHORT).show();
     }
 
+    // Spinner listeners
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // do nothing for now
@@ -81,9 +85,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // do nothing for now
     }
 
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
         // do nothing for now
     }
+
+    //Button listener (For random face)
+    @Override
+    public void onClick(View view){
+
+    }
+
+    // Seekbar Listeners
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+    
+
 }

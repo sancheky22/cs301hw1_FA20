@@ -1,11 +1,15 @@
 // @author Kyle Sanchez
 package com.example.cs301hw1_fa20;
 
+import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.AttributeSet;
+import android.view.SurfaceView;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Face {
+public class Face extends SurfaceView{
     // Instance variables for different color values
     private int skinColor;
     private int eyeColor;
@@ -14,7 +18,11 @@ public class Face {
 
     // Constructor
     // calls the randomize function
-    public Face(){
+
+    // since
+    public Face(Context context, AttributeSet attrs){
+        super(context, attrs);
+        setWillNotDraw(false);
         randomize();
     }
 
@@ -29,7 +37,7 @@ public class Face {
 
     public void randomize(){
         // creates random rgb values (0-255) for skin,eye,hair
-        
+
         // skin R,G,B
         int skinR = ThreadLocalRandom.current().nextInt(0,255);
         int skinG = ThreadLocalRandom.current().nextInt(0,255);
@@ -44,6 +52,7 @@ public class Face {
         int hairB = ThreadLocalRandom.current().nextInt(0,255);
 
         // creates random colors from within specific range
+        // set alpha to 255 (full opacity)
         int randSkin = Color.argb(255,skinR,skinG,skinB);
         int randEye = Color.argb(255,eyeR,eyeG,eyeB);
         int randHairCol  = Color.argb(255,hairR,hairG,hairB);
@@ -55,4 +64,9 @@ public class Face {
         this.hairColor = randHairCol;
         this.hairStyle = randHairSty;
     }
+
+   @Override
+   public void onDraw(Canvas canvas){
+
+   }
 }
