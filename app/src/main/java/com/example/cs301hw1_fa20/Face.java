@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
@@ -47,24 +46,24 @@ public class Face extends SurfaceView{
         // creates random rgb values (0-255) for skin,eye,hair
 
         // skin R,G,B
-        int skinR = ThreadLocalRandom.current().nextInt(0,255);
-        int skinG = ThreadLocalRandom.current().nextInt(0,255);
-        int skinB = ThreadLocalRandom.current().nextInt(0,255);
+        int skinR = ThreadLocalRandom.current().nextInt(0,256);
+        int skinG = ThreadLocalRandom.current().nextInt(0,256);
+        int skinB = ThreadLocalRandom.current().nextInt(0,256);
         // eye R,G,B
-        int eyeR = ThreadLocalRandom.current().nextInt(0,255);
-        int eyeG = ThreadLocalRandom.current().nextInt(0,255);
-        int eyeB = ThreadLocalRandom.current().nextInt(0,255);
+        int eyeR = ThreadLocalRandom.current().nextInt(0,256);
+        int eyeG = ThreadLocalRandom.current().nextInt(0,256);
+        int eyeB = ThreadLocalRandom.current().nextInt(0,256);
         // hair R,G,B
-        int hairR = ThreadLocalRandom.current().nextInt(0,255);
-        int hairG = ThreadLocalRandom.current().nextInt(0,255);
-        int hairB = ThreadLocalRandom.current().nextInt(0,255);
+        int hairR = ThreadLocalRandom.current().nextInt(0,256);
+        int hairG = ThreadLocalRandom.current().nextInt(0,256);
+        int hairB = ThreadLocalRandom.current().nextInt(0,256);
 
         // creates random colors from within specific range
         // set alpha to 255 (full opacity)
         int randSkin = Color.argb(255,skinR,skinG,skinB);
         int randEye = Color.argb(255,eyeR,eyeG,eyeB);
         int randHairCol  = Color.argb(255,hairR,hairG,hairB);
-        int randHairSty =  ThreadLocalRandom.current().nextInt(1,3);
+        int randHairSty =  ThreadLocalRandom.current().nextInt(1,4);
 
         // setting instance variables to randomized values
         this.skinColor = randSkin;
@@ -100,9 +99,7 @@ public class Face extends SurfaceView{
 
        drawFace(canvas,cx,cy,rad);
        drawEyes(canvas,cx,cy,rad);
-       drawHairStyle3(canvas,left,top,right,bottom);
 
-       /*
        // depending on what the random hair style int is
        // draw the corresponding hairstyle (1-3)
        if(hairStyle==1){
@@ -110,8 +107,8 @@ public class Face extends SurfaceView{
        }else if(hairStyle==2){
            drawHairStyle2(canvas,left,top,right,bottom);
        }else if(hairStyle==3){
-           drawHairStyle3(canvas,left,top,right,bottom);
-       }*/
+           drawHairStyle3(canvas);
+       }
 
 
    }
@@ -145,34 +142,49 @@ public class Face extends SurfaceView{
         invalidate();
     }
 
-    public void drawHairStyle3(Canvas canvas, float left,float top,float right,float bottom){
-        // draws a pointy triangle haircut
+    public void drawHairStyle3(Canvas canvas){
+        // draws a pointy triangle haircut that looks kind of like a crown
         /**
          External Citation
          Date: 28 September 2020
          Problem: Didn't know how to draw a triangle that's filled in
-         Resource:
-         https://stackoverflow.com/questions/20544668/how-to-draw-filled-triangle-on-android-canvas/22690364
-         Solution: Used example code to use paths to draw triangles
+         Resources:
+         https://kylewbanks.com/blog/drawing-triangles-rhombuses-and-other-shapes-on-android-canvas         https://developer.android.com/reference/android/graphics/Path
+         https://developer.android.com/reference/android/graphics/Path
+         Solution: Used example code to use paths to draw triangles and read documentation
+         to understand path class
          */
-        //canvas.drawPaint(hairPaint);
+
         hairPaint.setStrokeWidth(4);
         hairPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         hairPaint.setAntiAlias(true);
 
-        Point a = new Point( 200, 200);
-        Point b = new Point(200, 400);
-        Point c = new Point(400, 300);
+        // first triangle
+        Path path1 = new Path();
+        path1.moveTo(800, 100); // Top
+        path1.lineTo(725 , 300); // Bottom left
+        path1.lineTo(875,300); // Bottom right
+        path1.lineTo(800, 100); // Back to Top
+        path1.close();
+        canvas.drawPath(path1, hairPaint);
 
-        Path path = new Path();
-        path.setFillType(Path.FillType.EVEN_ODD);
-        path.lineTo(b.x, b.y);
-        path.lineTo(c.x, c.y);
-        path.lineTo(a.x, a.y);
-        path.close();
+        // second triangle
+        Path path2 = new Path();
+        path2.moveTo(950, 100); // Top
+        path2.lineTo(875 , 300); // Bottom left
+        path2.lineTo(1025,300); // Bottom right
+        path2.lineTo(950, 100); // Back to Top
+        path2.close();
+        canvas.drawPath(path2, hairPaint);
 
-        canvas.drawPath(path, hairPaint);
-
+        // third triangle
+        Path path3 = new Path();
+        path3.moveTo(1100, 100); // Top
+        path3.lineTo(1025 , 300); // Bottom left
+        path3.lineTo(1175,300); // Bottom right
+        path3.lineTo(1100, 100); // Back to Top
+        path3.close();
+        canvas.drawPath(path3, hairPaint);
 
     }
 }
