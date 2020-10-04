@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
@@ -65,24 +67,21 @@ public class Face extends SurfaceView{
         int randHairSty =  ThreadLocalRandom.current().nextInt(1,3);
 
         // setting instance variables to randomized values
-        //this.skinColor = randSkin;
+        this.skinColor = randSkin;
         this.eyeColor = randEye;
         this.hairColor = randHairCol;
         this.hairStyle = randHairSty;
 
-        // setting skin,eye,hair colors
+        // setting skin paint to skincolor
         this.skinPaint = new Paint();
-        this.skinColor = Color.rgb(skinR,skinB,skinG);
         this.skinPaint.setColor(skinColor);
 
-        // setting eye color
+        // setting eye paint to eye color
         this.eyePaint = new Paint();
-        this.eyeColor = Color.rgb(eyeR,eyeG,eyeB);
         this.eyePaint.setColor(eyeColor);
 
-        //setting hair color
+        //setting hair paint to hair color
         this.hairPaint = new Paint();
-        this.hairColor = Color.rgb(hairR,hairG,hairB);
         this.hairPaint.setColor(hairColor);
     }
 
@@ -91,26 +90,89 @@ public class Face extends SurfaceView{
        int cx = getWidth() /2;
        int cy = getHeight() /2;
        int rad = getWidth() /8;
-       /*
+
        float left = cx - rad/2 - rad/3;
        float right = cx + rad/2 + rad/3;
        float top = cy - rad;
        float bottom = cy - rad/8;
 
 
-        */
+
        drawFace(canvas,cx,cy,rad);
        drawEyes(canvas,cx,cy,rad);
+       drawHairStyle3(canvas,left,top,right,bottom);
+
+       /*
+       // depending on what the random hair style int is
+       // draw the corresponding hairstyle (1-3)
+       if(hairStyle==1){
+           drawHairStyle1(canvas,left,top,right,bottom);
+       }else if(hairStyle==2){
+           drawHairStyle2(canvas,left,top,right,bottom);
+       }else if(hairStyle==3){
+           drawHairStyle3(canvas,left,top,right,bottom);
+       }*/
+
+
    }
 
+   // The helper methods below help draw the face
+
+   //creates a face with a random color and takes in a center x and y and radius
    public void drawFace(Canvas canvas, int cx, int cy, int rad){
+        // draws a circle in the middle of the SV that is the face
         canvas.drawCircle(cx,cy,rad,skinPaint);
         invalidate();
    }
-
+   // similar to the drawFace method but instead draws two circles of equal size
+   // on the SV with a random paint color
    public void drawEyes(Canvas canvas, int cx, int cy, int rad){
-        canvas.drawCircle(850,400,40,eyePaint);
-        canvas.drawCircle(1050,400,40,eyePaint);
+        // had to hardcode the center x,y couldn't get math to work ;(
+        canvas.drawCircle(850,420,40,eyePaint);
+        canvas.drawCircle(1070,420,40,eyePaint);
         invalidate();
    }
+
+   public void drawHairStyle1(Canvas canvas, float left,float top,float right,float bottom){
+        // draws a bowl cut as a hair style with the random hair paint
+        canvas.drawArc(left,top,right,bottom,180,180,false,hairPaint);
+        invalidate();
+   }
+
+    public void drawHairStyle2(Canvas canvas, float left,float top,float right,float bottom){
+        // draws a rect as a haircut just like a flattop hair cut and sets its paint as the random hair paint
+        canvas.drawRect(left+50,top-75,right-50,bottom-150,hairPaint);
+        invalidate();
+    }
+
+    public void drawHairStyle3(Canvas canvas, float left,float top,float right,float bottom){
+        // draws a pointy triangle haircut
+        /**
+         External Citation
+         Date: 28 September 2020
+         Problem: Didn't know how to draw a triangle that's filled in
+         Resource:
+         https://stackoverflow.com/questions/20544668/how-to-draw-filled-triangle-on-android-canvas/22690364
+         Solution: Used example code to use paths to draw triangles
+         */
+        //canvas.drawPaint(hairPaint);
+        hairPaint.setStrokeWidth(4);
+        hairPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        hairPaint.setAntiAlias(true);
+
+        Point a = new Point( 200, 200);
+        Point b = new Point(200, 400);
+        Point c = new Point(400, 300);
+
+        Path path = new Path();
+        path.setFillType(Path.FillType.EVEN_ODD);
+        path.lineTo(b.x, b.y);
+        path.lineTo(c.x, c.y);
+        path.lineTo(a.x, a.y);
+        path.close();
+
+        canvas.drawPath(path, hairPaint);
+
+
+    }
 }

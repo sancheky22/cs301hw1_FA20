@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      Solution: I read the documentation to learn how to use radio groups/buttons
      */
 
-    RadioGroup radioGroup;
-    RadioButton radioButton;
-    Face faceModel;
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
+    private Face faceModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
