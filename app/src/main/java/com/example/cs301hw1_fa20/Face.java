@@ -4,6 +4,7 @@ package com.example.cs301hw1_fa20;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
@@ -16,10 +17,15 @@ public class Face extends SurfaceView{
     private int hairColor;
     private int hairStyle;
 
+    //Instance variables for different paint colors
+    private Paint skinPaint;
+    private Paint eyePaint;
+    private Paint hairPaint;
+    //private Paint
+
+
     // Constructor
     // calls the randomize function
-
-    // since
     public Face(Context context, AttributeSet attrs){
         super(context, attrs);
         setWillNotDraw(false);
@@ -59,14 +65,52 @@ public class Face extends SurfaceView{
         int randHairSty =  ThreadLocalRandom.current().nextInt(1,3);
 
         // setting instance variables to randomized values
-        this.skinColor = randSkin;
+        //this.skinColor = randSkin;
         this.eyeColor = randEye;
         this.hairColor = randHairCol;
         this.hairStyle = randHairSty;
+
+        // setting skin,eye,hair colors
+        this.skinPaint = new Paint();
+        this.skinColor = Color.rgb(skinR,skinB,skinG);
+        this.skinPaint.setColor(skinColor);
+
+        // setting eye color
+        this.eyePaint = new Paint();
+        this.eyeColor = Color.rgb(eyeR,eyeG,eyeB);
+        this.eyePaint.setColor(eyeColor);
+
+        //setting hair color
+        this.hairPaint = new Paint();
+        this.hairColor = Color.rgb(hairR,hairG,hairB);
+        this.hairPaint.setColor(hairColor);
     }
 
    @Override
    public void onDraw(Canvas canvas){
+       int cx = getWidth() /2;
+       int cy = getHeight() /2;
+       int rad = getWidth() /8;
+       /*
+       float left = cx - rad/2 - rad/3;
+       float right = cx + rad/2 + rad/3;
+       float top = cy - rad;
+       float bottom = cy - rad/8;
 
+
+        */
+       drawFace(canvas,cx,cy,rad);
+       drawEyes(canvas,cx,cy,rad);
+   }
+
+   public void drawFace(Canvas canvas, int cx, int cy, int rad){
+        canvas.drawCircle(cx,cy,rad,skinPaint);
+        invalidate();
+   }
+
+   public void drawEyes(Canvas canvas, int cx, int cy, int rad){
+        canvas.drawCircle(850,400,40,eyePaint);
+        canvas.drawCircle(1050,400,40,eyePaint);
+        invalidate();
    }
 }

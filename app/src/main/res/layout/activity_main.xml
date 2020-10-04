@@ -106,7 +106,7 @@
                 android:spinnerMode="dropdown" />
 
             <Button
-                android:id="@+id/randomFace"
+                android:id="@+id/randomFaceButton"
                 android:layout_width="200dp"
                 android:layout_height="50dp"
                 android:text="Random Face" />

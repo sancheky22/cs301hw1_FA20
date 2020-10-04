@@ -4,11 +4,15 @@ package com.example.cs301hw1_fa20;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -18,6 +22,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
         View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+
+
 
     /**
      External Citation
@@ -30,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     RadioGroup radioGroup;
     RadioButton radioButton;
+    Face faceModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner.setOnItemSelectedListener(this);
         radioGroup = findViewById(R.id.radioGroup);
 
+        //Setting up the randomFaceButton and it's corresponding listener
+        Button randomButton = findViewById(R.id.randomFaceButton);
+        randomButton.setOnClickListener(this);
+
+        this.faceModel = findViewById(R.id.Face);
 
     }
     /**
@@ -93,7 +105,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     //Button listener (For random face)
     @Override
     public void onClick(View view){
-
+        Log.d("ONCLICK","I've been clicked");
+        faceModel.randomize();
+        faceModel.invalidate();
     }
 
     // Seekbar Listeners
@@ -111,6 +125,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
-    
+
 
 }
