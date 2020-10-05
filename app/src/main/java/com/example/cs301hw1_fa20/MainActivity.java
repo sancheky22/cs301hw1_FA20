@@ -54,11 +54,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
          */
 
         Spinner spinner = findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.hairStyles,
-                android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.hairStyles, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
+
+
+
         radioGroup = findViewById(R.id.radioGroup);
 
         //Setting up the randomFaceButton and it's corresponding listener
@@ -78,18 +82,66 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      */
 
     // Listener for radio buttons
+
     public void checkedButton(View v){
         int radioId = radioGroup.getCheckedRadioButtonId();
         // sets radio  button to the ID of the radio button in the SV
         radioButton = findViewById(radioId);
         // This toast  dipslays text when radio buttons are selected.
         Toast.makeText(this,"Selected Radio Button: " + radioButton.getText(),Toast.LENGTH_SHORT).show();
+
+        /*
+        if(radioButton.getText()=="Style1"){
+            faceModel.hairStyle = 1;
+            faceModel.invalidate();
+        }else if(radioButton.getText()=="Style2"){
+            faceModel.hairStyle = 2;
+            faceModel.invalidate();
+        }else if(radioButton.getText()=="Style3"){
+            faceModel.hairStyle = 3;
+            faceModel.invalidate();
+        }*/
+
+
     }
 
     // Spinner listeners
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // do nothing for now
+        String style = parent.getItemAtPosition(position).toString();
+        Log.d("Style Check",style);
+
+
+        /**
+         External Citation
+         Date: 3 October 2020
+         Problem: Wanted to know how to use toasts for Spinners
+         Resource:
+         https://stackoverflow.com/questions/20151414/how-can-i-use-onitemselected-in-android
+         Solution: I used the example provided
+         */
+
+        Toast.makeText(parent.getContext(),"Hair Style: "+ parent.getItemAtPosition(position).toString(),
+                Toast.LENGTH_SHORT).show();
+
+        // if style selected is changes to the corresponding hairstyle and
+        // sets current int hairStyle to its current hair style number (1-3)
+        // it then tellls the SV the updated style and redraws it
+        if(style.equals("Style1")){
+            Log.d("Style1 was checked",style);
+            faceModel.invalidate();
+            faceModel.hairStyle = 1;
+            faceModel.invalidate();
+        }else if(style.equals("Style2")){
+            faceModel.invalidate();
+            faceModel.hairStyle = 2;
+            faceModel.invalidate();
+        }else if(style.equals("Style3")){
+            faceModel.invalidate();
+            faceModel.hairStyle = 3;
+            faceModel.invalidate();
+        }
     }
 
     @Override

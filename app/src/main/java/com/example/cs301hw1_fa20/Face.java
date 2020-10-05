@@ -16,7 +16,7 @@ public class Face extends SurfaceView{
     private int skinColor;
     private int eyeColor;
     private int hairColor;
-    private int hairStyle;
+    public int hairStyle; // public in order for MainActivity to have access to it
 
     //Instance variables for different paint colors
     private Paint skinPaint;
@@ -99,6 +99,7 @@ public class Face extends SurfaceView{
 
        drawFace(canvas,cx,cy,rad);
        drawEyes(canvas,cx,cy,rad);
+       drawMouth(canvas,left,top,right,bottom);
 
        // depending on what the random hair style int is
        // draw the corresponding hairstyle (1-3)
@@ -130,6 +131,11 @@ public class Face extends SurfaceView{
         invalidate();
    }
 
+   // draws a mouth with teh same paint color as the eyes (They always will match)
+   public void drawMouth(Canvas canvas, float left,float top,float right,float bottom){
+        canvas.drawRect(left+50,top+300,right-50,bottom+150,eyePaint);
+        invalidate();
+   }
    public void drawHairStyle1(Canvas canvas, float left,float top,float right,float bottom){
         // draws a bowl cut as a hair style with the random hair paint
         canvas.drawArc(left,top,right,bottom,180,180,false,hairPaint);
@@ -187,4 +193,6 @@ public class Face extends SurfaceView{
         canvas.drawPath(path3, hairPaint);
 
     }
+
+
 }
