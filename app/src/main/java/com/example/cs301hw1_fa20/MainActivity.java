@@ -1,13 +1,15 @@
-// @author Kyle Sanchez
-
+/**
+ *  @author Kyle Sanchez
+ *  Version 10/4/2020
+ */
 package com.example.cs301hw1_fa20;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,7 +38,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private RadioGroup radioGroup;
     private RadioButton radioButton;
-    private Face faceModel;
+
+    // instance variables
+    private Face faceModel; // need instance of Face to access things in SV
+    private SeekBar redSB;
+    private SeekBar greenSB;
+    private SeekBar blueSB;
+    private RadioButton hairRadioButton;
+    private RadioButton eyesRadioButton;
+    private RadioButton skinRadioButton;
+    // These ints are used to hold the value that each slider has
+    private int redSlider = 0;
+    private int greenSlider = 0;
+    private int blueSlider = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
          Solution: I read the documentation to learn how to use spinners
          */
 
+        // Setting spinner adapters and listeners
         Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.hairStyles, android.R.layout.simple_spinner_item);
@@ -60,16 +75,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+        // Seekbar listeners
+        // init red seek bar and set MainActivity as listener
+        this.redSB = findViewById(R.id.redSeekBar);
+        redSB.setOnSeekBarChangeListener(this);
+        // init green seek bar and set MainActivity as listener
+        this.greenSB = findViewById(R.id.greenSeekBar);
+        greenSB.setOnSeekBarChangeListener(this);
+        // init blue seek bar and set MainActivity as listener
+        this.blueSB = findViewById(R.id.blueSeekBar);
+        blueSB.setOnSeekBarChangeListener(this);
 
 
-
+        // setting up radio group for radio buttons
         radioGroup = findViewById(R.id.radioGroup);
+        // telling Main Activity which radio button I am referring to and setting a listener on it
+        this.hairRadioButton = findViewById(R.id.radio_Hair);
+        this.hairRadioButton.setOnClickListener(this);
+
+        this.eyesRadioButton = findViewById(R.id.radio_Eyes);
+        this.eyesRadioButton.setOnClickListener(this);
+
+        this.skinRadioButton = findViewById(R.id.radio_Skin);
+        this.skinRadioButton.setOnClickListener(this);
+
 
         //Setting up the randomFaceButton and it's corresponding listener
         Button randomButton = findViewById(R.id.randomFaceButton);
         randomButton.setOnClickListener(this);
 
-        this.faceModel = findViewById(R.id.Face);
+
+        // making instance of SV (which I named face)
+        this.faceModel = findViewById(R.id.Face); // This will be used throughout the Main Activity
 
     }
     /**
@@ -82,36 +119,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      */
 
     // Listener for radio buttons
-
     public void checkedButton(View v){
         int radioId = radioGroup.getCheckedRadioButtonId();
         // sets radio  button to the ID of the radio button in the SV
         radioButton = findViewById(radioId);
         // This toast  dipslays text when radio buttons are selected.
-        Toast.makeText(this,"Selected Radio Button: " + radioButton.getText(),Toast.LENGTH_SHORT).show();
-
-        /*
-        if(radioButton.getText()=="Style1"){
-            faceModel.hairStyle = 1;
-            faceModel.invalidate();
-        }else if(radioButton.getText()=="Style2"){
-            faceModel.hairStyle = 2;
-            faceModel.invalidate();
-        }else if(radioButton.getText()=="Style3"){
-            faceModel.hairStyle = 3;
-            faceModel.invalidate();
-        }*/
-
-
+        Toast.makeText(this,"Selected Radio Button: " + radioButton.getText(),
+                Toast.LENGTH_SHORT).show();
     }
 
     // Spinner listeners
+    // When different items in the spinner are selected (Hair styles) the SV is updated to reflect what
+    // hair style was clicked
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // do nothing for now
+        // This string is used to check if the string of the Style matches what is clicked on
         String style = parent.getItemAtPosition(position).toString();
         Log.d("Style Check",style);
-
 
         /**
          External Citation
@@ -122,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
          Solution: I used the example provided
          */
 
+        // Toast that displays what hair style is selected
         Toast.makeText(parent.getContext(),"Hair Style: "+ parent.getItemAtPosition(position).toString(),
                 Toast.LENGTH_SHORT).show();
 
@@ -131,15 +156,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if(style.equals("Style1")){
             Log.d("Style1 was checked",style);
             faceModel.invalidate();
-            faceModel.hairStyle = 1;
+            faceModel.setHairStyle(1);
             faceModel.invalidate();
         }else if(style.equals("Style2")){
             faceModel.invalidate();
-            faceModel.hairStyle = 2;
+            faceModel.setHairStyle(2);
             faceModel.invalidate();
         }else if(style.equals("Style3")){
             faceModel.invalidate();
-            faceModel.hairStyle = 3;
+            faceModel.setHairStyle(3);
             faceModel.invalidate();
         }
     }
@@ -157,25 +182,87 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     //Button listener (For random face)
     @Override
     public void onClick(View view){
-        Log.d("ONCLICK","I've been clicked");
-        faceModel.randomize();
-        faceModel.invalidate();
+        // ints for different red,green, blue values
+        // this is used to update the Seekbars when the different radio buttons
+        // are selected
+        int r,g,b;
+        // if the randomFaceButton is clicked then randomize
+        if(view.getId()==R.id.randomFaceButton) {
+            Log.d("ONCLICK","I've been clicked");
+            faceModel.randomize();
+            faceModel.invalidate();
+        }else if(view.getId()==R.id.radio_Hair){ // if the radioHair Button is selected then update the progress with the corresponding r,g,b values
+            r= Color.red(faceModel.getHairColor());
+            g= Color.green(faceModel.getHairColor());
+            b= Color.blue(faceModel.getHairColor());
+            // sets the progress of each seek bar to its corresponding int value
+            this.redSB.setProgress(r);
+            this.greenSB.setProgress(g);
+            this.blueSB.setProgress(b);
+
+        }else if(view.getId()==R.id.radio_Eyes){ // if the radioEyes Button is selected then update the progress with the corresponding r,g,b values
+            r= Color.red(faceModel.getEyeColor());
+            g= Color.green(faceModel.getEyeColor());
+            b= Color.blue(faceModel.getEyeColor());
+            // sets the progress of each seek bar to its corresponding int value
+            this.redSB.setProgress(r);
+            this.greenSB.setProgress(g);
+            this.blueSB.setProgress(b);
+
+        }else if(view.getId()==R.id.radio_Skin){ // if the radioSkin Button is selected then update the progress with the corresponding r,g,b values
+            r= Color.red(faceModel.getSkinColor());
+            g= Color.green(faceModel.getSkinColor());
+            b= Color.blue(faceModel.getSkinColor());
+            // sets the progress of each seek bar to its corresponding int value
+            this.redSB.setProgress(r);
+            this.greenSB.setProgress(g);
+            this.blueSB.setProgress(b);
+        }
+
     }
 
     // Seekbar Listeners
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        // first checks if the seekBar change is coming from user, if yes proceeds
+        if(fromUser) {
+            // if the Seek bar is moved it makes the Slider int equal to the progress
+            // this progress is the value of what the seekBar is
+            if (seekBar.getId() == R.id.redSeekBar) {
+                redSlider = progress;
+            } else if (seekBar.getId() == R.id.greenSeekBar) {
+                greenSlider = progress;
+            } else if (seekBar.getId() == R.id.blueSeekBar) {
+                blueSlider = progress;
+            }
 
+            // this new int is the color of what the slider values are
+            // could have used Color.rgb
+            // but wanted to emphasize that the opacity is opaque
+            int color = Color.argb(255,redSlider,greenSlider,blueSlider);
+
+            // depending on what radio button is checked the corresponding skin,eye, or hair color is
+            // updated with the value of the slider
+            if (this.hairRadioButton.isChecked()) {
+                faceModel.setHairColor(color);
+            } else if (this.skinRadioButton.isChecked()) {
+                faceModel.setSkinColor(color);
+            } else if (this.eyesRadioButton.isChecked()) {
+                faceModel.setEyeColor(color);
+            }
+        }
+        // tells SV to reDraw itself after changes are made with the Seek Bars
+        faceModel.invalidate();
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-
+        // do nothing
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-
+        // do nothing
     }
 
 

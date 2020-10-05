@@ -37,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="BLUE"
+                android:text="GREEN"
                 android:textColor="@android:color/black" />
 
             <TextView
@@ -45,7 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="GREEN"
+                android:text="BLUE"
                 android:textColor="@android:color/black" />
 
         </LinearLayout>
@@ -77,7 +77,7 @@
                 android:min="0"
                 android:progress="0"
                 android:progressBackgroundTint="#FFFFFF"
-                android:thumbTint="@android:color/holo_blue_dark" />
+                android:thumbTint="@android:color/holo_green_dark" />
 
             <SeekBar
                 android:id="@+id/blueSeekBar"
@@ -88,7 +88,7 @@
                 android:min="0"
                 android:progress="0"
                 android:progressBackgroundTint="#FFFFFF"
-                android:thumbTint="@android:color/holo_green_dark" />
+                android:thumbTint="@android:color/holo_blue_dark" />
 
         </LinearLayout>
 

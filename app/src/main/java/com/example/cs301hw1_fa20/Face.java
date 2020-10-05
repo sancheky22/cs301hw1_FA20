@@ -1,4 +1,7 @@
-// @author Kyle Sanchez
+/**
+ *  @author Kyle Sanchez
+ *  Version 10/4/2020
+ */
 package com.example.cs301hw1_fa20;
 
 import android.content.Context;
@@ -16,13 +19,12 @@ public class Face extends SurfaceView{
     private int skinColor;
     private int eyeColor;
     private int hairColor;
-    public int hairStyle; // public in order for MainActivity to have access to it
+    private int hairStyle; // public in order for MainActivity to have access to it
 
     //Instance variables for different paint colors
     private Paint skinPaint;
     private Paint eyePaint;
     private Paint hairPaint;
-    //private Paint
 
 
     // Constructor
@@ -86,17 +88,29 @@ public class Face extends SurfaceView{
 
    @Override
    public void onDraw(Canvas canvas){
+       // sets the paint to their corresponding colors
+       // needs to be done again because whenever SV is not invalidated by
+       // the "Random Face button" you need to get the updated paint colors
+       this.hairPaint.setColor(hairColor);
+       this.eyePaint.setColor(eyeColor);
+       this.skinPaint.setColor(skinColor);
+
+       // gets width and height of SV
+       // these ints are used to draw the face, eyes and hair styles
+       // to match multiple screens(Hairstyle 3 doesn't do that however)
        int cx = getWidth() /2;
        int cy = getHeight() /2;
        int rad = getWidth() /8;
 
+       // creates float values which are needed by draw arc and rect along with some of the hairstyles
        float left = cx - rad/2 - rad/3;
        float right = cx + rad/2 + rad/3;
        float top = cy - rad;
        float bottom = cy - rad/8;
 
 
-
+       // calling my helper draw methods
+       // to redraw aspects of the face
        drawFace(canvas,cx,cy,rad);
        drawEyes(canvas,cx,cy,rad);
        drawMouth(canvas,left,top,right,bottom);
@@ -111,7 +125,6 @@ public class Face extends SurfaceView{
            drawHairStyle3(canvas);
        }
 
-
    }
 
    // The helper methods below help draw the face
@@ -125,13 +138,12 @@ public class Face extends SurfaceView{
    // similar to the drawFace method but instead draws two circles of equal size
    // on the SV with a random paint color
    public void drawEyes(Canvas canvas, int cx, int cy, int rad){
-        // had to hardcode the center x,y couldn't get math to work ;(
-        canvas.drawCircle(850,420,40,eyePaint);
-        canvas.drawCircle(1070,420,40,eyePaint);
+        canvas.drawCircle(cx-150,cy-80,40,eyePaint);
+        canvas.drawCircle(cx+150,cy-80,40,eyePaint);
         invalidate();
    }
 
-   // draws a mouth with teh same paint color as the eyes (They always will match)
+   // draws a mouth with the same paint color as the eyes (They always will match)
    public void drawMouth(Canvas canvas, float left,float top,float right,float bottom){
         canvas.drawRect(left+50,top+300,right-50,bottom+150,eyePaint);
         invalidate();
@@ -164,6 +176,9 @@ public class Face extends SurfaceView{
         hairPaint.setStrokeWidth(4);
         hairPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         hairPaint.setAntiAlias(true);
+        // had to hardcode the triangles couldn't get math to work :/
+        // it may display weird on Emulator
+        // works on ASUS p028 tablet
 
         // first triangle
         Path path1 = new Path();
@@ -192,6 +207,35 @@ public class Face extends SurfaceView{
         path3.close();
         canvas.drawPath(path3, hairPaint);
 
+    }
+    // setters for colors and style
+    // since instance vars. are private
+    public void setHairStyle(int x){
+        this.hairStyle=x;
+    }
+
+    public void setSkinColor(int x){
+        this.skinColor=x;
+    }
+
+    public void setEyeColor(int x){
+        this.eyeColor=x;
+    }
+
+    public void setHairColor(int x){
+        this.hairColor=x;
+    }
+
+    //getters for each color (skin,eye,hair)
+    // returns value of current color
+    public int getSkinColor(){
+        return this.skinColor;
+    }
+    public int getHairColor(){
+        return this.hairColor;
+    }
+    public int getEyeColor(){
+        return this.eyeColor;
     }
 
 
