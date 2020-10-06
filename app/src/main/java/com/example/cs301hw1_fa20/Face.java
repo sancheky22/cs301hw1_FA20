@@ -107,6 +107,7 @@ public class Face extends SurfaceView{
        float right = cx + rad/2 + rad/3;
        float top = cy - rad;
        float bottom = cy - rad/8;
+       float centerX = cx;
 
 
        // calling my helper draw methods
@@ -122,7 +123,7 @@ public class Face extends SurfaceView{
        }else if(hairStyle==2){
            drawHairStyle2(canvas,left,top,right,bottom);
        }else if(hairStyle==3){
-           drawHairStyle3(canvas);
+           drawHairStyle3(canvas,left,top,right,bottom,centerX);
        }
 
    }
@@ -160,8 +161,9 @@ public class Face extends SurfaceView{
         invalidate();
     }
 
-    public void drawHairStyle3(Canvas canvas){
+    public void drawHairStyle3(Canvas canvas, float left,float top,float right,float bottom,float centerX){
         // draws a pointy triangle haircut that looks kind of like a crown
+        // NOTE: Doesn't draw properly on tablet but on the Pixel C emulator it does
         /**
          External Citation
          Date: 28 September 2020
@@ -176,34 +178,31 @@ public class Face extends SurfaceView{
         hairPaint.setStrokeWidth(4);
         hairPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         hairPaint.setAntiAlias(true);
-        // had to hardcode the triangles couldn't get math to work :/
-        // it may display weird on Emulator
-        // works on ASUS p028 tablet
 
         // first triangle
         Path path1 = new Path();
-        path1.moveTo(800, 100); // Top
-        path1.lineTo(725 , 300); // Bottom left
-        path1.lineTo(875,300); // Bottom right
-        path1.lineTo(800, 100); // Back to Top
+        path1.moveTo(left+600, right-1350); // Top
+        path1.lineTo(top+1000 , top+50); // Bottom left
+        path1.lineTo(bottom+875,bottom); // Bottom right
+        path1.lineTo(left+600, right-1350); // Back to Top
         path1.close();
         canvas.drawPath(path1, hairPaint);
 
         // second triangle
         Path path2 = new Path();
-        path2.moveTo(950, 100); // Top
-        path2.lineTo(875 , 300); // Bottom left
-        path2.lineTo(1025,300); // Bottom right
-        path2.lineTo(950, 100); // Back to Top
+        path2.moveTo(centerX, right-1350); // Top
+        path2.lineTo(top+1000 , top+50); // Bottom left
+        path2.lineTo(top+675,top+50); // Bottom right
+        path2.lineTo(centerX, right-1350); // Back to Top
         path2.close();
         canvas.drawPath(path2, hairPaint);
 
         // third triangle
         Path path3 = new Path();
-        path3.moveTo(1100, 100); // Top
-        path3.lineTo(1025 , 300); // Bottom left
-        path3.lineTo(1175,300); // Bottom right
-        path3.lineTo(1100, 100); // Back to Top
+        path3.moveTo(left-60, right-1350); // Top
+        path3.lineTo(top+675 , top+50); // Bottom left
+        path3.lineTo(bottom+250,bottom); // Bottom right
+        path3.lineTo(left-60, right-1350); // Back to Top
         path3.close();
         canvas.drawPath(path3, hairPaint);
 
